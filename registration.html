@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registration Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      background: white;
+      color: #555;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #218838;
+    }
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+    .success-message {
+      text-align: center;
+      color: green;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Register</h2>
+    <form id="registrationForm" novalidate>
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" name="firstName" required />
+      <div class="error" id="firstNameError"></div>
+
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" name="lastName" required />
+      <div class="error" id="lastNameError"></div>
+
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender" required>
+        <option value="">--Select Gender--</option>
+        <option value="female">Female</option>
+        <option value="male">Male</option>
+        <option value="other">Other</option>
+      </select>
+      <div class="error" id="genderError"></div>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+      <div class="error" id="emailError"></div>
+
+      <label for="mobile">Mobile Number</label>
+      <input type="tel" id="mobile" name="mobile" required placeholder="e.g., 1234567890" />
+      <div class="error" id="mobileError"></div>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+      <div class="error" id="passwordError"></div>
+
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required />
+      <div class="error" id="confirmPasswordError"></div>
+
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="success-message" id="successMessage"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('registrationForm');
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    const gender = document.getElementById('gender');
+    const email = document.getElementById('email');
+    const mobile = document.getElementById('mobile');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+
+    const firstNameError = document.getElementById('firstNameError');
+    const lastNameError = document.getElementById('lastNameError');
+    const genderError = document.getElementById('genderError');
+    const emailError = document.getElementById('emailError');
+    const mobileError = document.getElementById('mobileError');
+    const passwordError = document.getElementById('passwordError');
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
+    const successMessage = document.getElementById('successMessage');
+
+    function validateEmail(email) {
+      // Simple email regex
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function validateMobile(mobile) {
+      // Validate mobile number: 10 digits starting with 6-9 (common rule in some countries)
+      const re = /^[6-9]\d{9}$/;
+      return re.test(mobile);
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Reset errors and success message
+      firstNameError.textContent = '';
+      lastNameError.textContent = '';
+      genderError.textContent = '';
+      emailError.textContent = '';
+      mobileError.textContent = '';
+      passwordError.textContent = '';
+      confirmPasswordError.textContent = '';
+      successMessage.textContent = '';
+
+      let isValid = true;
+
+      if (firstName.value.trim() === '') {
+        firstNameError.textContent = 'First name is required';
+        isValid = false;
+      }
+
+      if (lastName.value.trim() === '') {
+        lastNameError.textContent = 'Last name is required';
+        isValid = false;
+      }
+
+      if (gender.value === '') {
+        genderError.textContent = 'Please select your gender';
+        isValid = false;
+      }
+
+      if (email.value.trim() === '') {
+        emailError.textContent = 'Email is required';
+        isValid = false;
+      } else if (!validateEmail(email.value)) {
+        emailError.textContent = 'Please enter a valid email';
+        isValid = false;
+      }
+
+      if (mobile.value.trim() === '') {
+        mobileError.textContent = 'Mobile number is required';
+        isValid = false;
+      } else if (!validateMobile(mobile.value.trim())) {
+        mobileError.textContent = 'Please enter a valid 10-digit mobile number starting with 6-9';
+        isValid = false;
+      }
+
+      if (password.value === '') {
+        passwordError.textContent = 'Password is required';
+        isValid = false;
+      } else if (password.value.length < 6) {
+        passwordError.textContent = 'Password must be at least 6 characters';
+        isValid = false;
+      }
+
+      if (confirmPassword.value === '') {
+        confirmPasswordError.textContent = 'Please confirm your password';
+        isValid = false;
+      } else if (password.value !== confirmPassword.value) {
+        confirmPasswordError.textContent = 'Passwords do not match';
+        isValid = false;
+      }
+
+      if (isValid) {
+        successMessage.textContent = 'Registration successful!';
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>
